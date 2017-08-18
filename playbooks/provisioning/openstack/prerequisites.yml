@@ -65,10 +65,12 @@
     os_networks_facts:
       name: "{{ openstack_external_network_name }}"
     register: network_result
+    when: not openstack_provider_network_name|default(None)
   - name: Check that network is available
     assert:
       that: "network_result.ansible_facts.openstack_networks"
       msg: "Network {{ openstack_external_network_name }} is not available"
+    when: not openstack_provider_network_name|default(None)
 
   # Check keypair
   # TODO kpilatov: there is no Ansible module for getting OS keypairs
@@ -84,6 +86,20 @@
     assert:
       that: 'key_result.rc == 0'
       msg: "Keypair {{ openstack_ssh_public_key }} is not available"
+
+  - name: The provider and private networks can't be set at the same time
+    fail:
+      msg: You cannot set both `openstack_provider_network_name` and `openstack_private_network_name` at the same time
+    when:
+    - openstack_provider_network_name|default(None)
+    - openstack_private_network_name|default(None)
+
+  - name: The provider and external networks can't be set at the same time
+    fail:
+      msg: You cannot set both `openstack_provider_network_name` and `openstack_external_network_name` at the same time
+    when:
+    - openstack_provider_network_name|default(None)
+    - openstack_external_network_name|default(None)
 
 # Check that custom images and flavors exist
 - hosts: localhost

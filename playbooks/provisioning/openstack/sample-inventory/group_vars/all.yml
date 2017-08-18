@@ -16,6 +16,11 @@ openstack_ssh_public_key: "openshift"
 openstack_external_network_name: "public"
 #openstack_private_network_name:  "openshift-ansible-{{ stack_name }}-net"
 
+## If you want to use a provider network, set its name here.
+## NOTE: you must remove the `openstack_external_network_name` and
+## `openstack_private_network_name` options above.
+#openstack_provider_network_name: "provider"
+
 # # Used Images
 # # - set specific images for roles by uncommenting corresponding lines
 # # - note: do not remove openstack_default_image_name definition
