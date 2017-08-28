@@ -254,15 +254,13 @@ provider network directly.
 To use a provider network, set its name in `openstack_provider_network_name` in
 `inventory/group_vars/all.yml`.
 
-You must also unset the `openstack_external_network_name` and
-`openstack_private_network_name` fields.
+If you set the provider network name, the `openstack_external_network_name` and
+`openstack_private_network_name` fields will be ignored.
 
 **NOTE**: this will not update the nodes' DNS, so running openshift-ansible
 right after provisioning will fail (unless you're using an external DNS server
 your provider network knows about). You must make sure your nodes are able to
-resolve each other by name, e.g. by setting `dns_nameservers` on your subnet or
-editing each node's `/etc/resolv.conf`.
-
+resolve each other by name.
 
 ### Configure the OpenShift parameters
 
