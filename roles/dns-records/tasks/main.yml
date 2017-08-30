@@ -50,6 +50,22 @@
   with_items: "{{ groups['infra_hosts'] }}"
   when: hostvars[item]['public_v4'] is defined
 
+- name: "Add public master cluster hostname records to the public A records"
+  set_fact:
+    public_records: "{{ public_records | default([]) + [ { 'type': 'A', 'hostname': hostvars[groups.masters[0]].openshift_master_cluster_public_hostname, 'ip': hostvars[groups.masters[0]].public_v4 } ] }}"
+  with_items: "{{ groups['cluster_hosts'] }}"
+  when:
+    - hostvars[groups.masters[0]].openshift_master_cluster_public_hostname is defined
+    - "{{ hostvars['localhost'].openstack_num_masters == 1 }}"
+
+- name: "Add public master cluster hostname records to the public A records"
+  set_fact:
+    public_records: "{{ public_records | default([]) + [ { 'type': 'A', 'hostname': hostvars[groups.masters[0]].openshift_master_cluster_public_hostname, 'ip': hostvars[groups.lb[0]].public_v4 } ] }}"
+  with_items: "{{ groups['cluster_hosts'] }}"
+  when:
+    - hostvars[groups.masters[0]].openshift_master_cluster_public_hostname is defined
+    - "{{ hostvars['localhost'].openstack_num_masters > 1 }}"
+
 - name: "Set the public DNS server details to use the external value (if provided)"
   set_fact:
     nsupdate_server_public: "{{ external_nsupdate_keys['public']['server'] }}"
