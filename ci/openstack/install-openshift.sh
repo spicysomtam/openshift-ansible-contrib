@@ -45,3 +45,12 @@ for i in $(seq 15); do
         printf .
         sleep 60
 done
+
+echo oc get nodes --show-labels:
+ansible -i "$INVENTORY" masters --user openshift --private-key ~/.ssh/id_rsa -m command -a 'oc get nodes --show-labels'
+
+echo oc status -v:
+ansible -i "$INVENTORY" masters --user openshift --private-key ~/.ssh/id_rsa -m command -a 'oc status -v'
+
+echo oc get all:
+ansible -i "$INVENTORY" masters --user openshift --private-key ~/.ssh/id_rsa -m command -a 'oc get all'
