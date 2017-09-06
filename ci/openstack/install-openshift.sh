@@ -31,6 +31,7 @@ for i in $(seq 15); do
     else
         printf .
         sleep 60
+    fi
 done
 
 echo Waiting for the docker-registry to come up
@@ -44,6 +45,7 @@ for i in $(seq 15); do
     else
         printf .
         sleep 60
+    fi
 done
 
 echo oc get nodes --show-labels:
