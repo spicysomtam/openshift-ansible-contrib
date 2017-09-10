@@ -47,7 +47,7 @@ end
 
 override_box_url = ''
 if deployment_type == 'openshift-enterprise'
-  box_name = 'rhel/7.2'
+  box_name = 'rhel/7.4'
 elsif origin_os == 'centos'
   box_name = 'centos/7'
 else
@@ -89,7 +89,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   # Configure eth0 via script, will disable NetworkManager and enable legacy network daemon:
-  config.vm.provision "shell", path: "provision/setup.sh", args: [NETWORK_BASE]
+  # Thi breaks things
+  #config.vm.provision "shell", path: "provision/setup.sh", args: [NETWORK_BASE]
 
   config.vm.provider "virtualbox" do |v, override|
     #v.customize ["setextradata", :id, "VBoxInternal2/SharedFoldersEnableSymlinksCreate//vagrant","1"]

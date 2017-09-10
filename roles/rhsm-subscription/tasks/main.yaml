@@ -49,6 +49,7 @@
         state: present
         pool: "{{ rhsm_pool }}"
       when: "'not registered' in subscribed.stdout or 'Current' not in subscribed.stdout and rhsm_user is defined and rhsm_user"
+      ignore_errors: yes
 
     - name: Check if subscription is attached
       command: subscription-manager list --consumed --pool-only --matches="{{ rhsm_pool }}"
